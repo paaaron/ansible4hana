@@ -1,0 +1,14 @@
+- hosts: hanatraining 
+  gather_facts: false
+  vars:
+    instance_number: "90"
+    hana_sid: "HXE"
+  tasks:   
+  - name: SAP HANA Service Start
+    become: yes
+    become_user: "hxeadm"
+    #shell: "/usr/sap/SH1/HDB00/HDB info|grep -i 'hdbnameserver'"
+    shell: "/usr/sap/hostctrl/exe/sapcontrol -nr {{instance_number}} -function Start"
+    register: hdbstatus
+  - debug: 
+      msg: "{{hdbstatus.stdout.split('\n')}}"

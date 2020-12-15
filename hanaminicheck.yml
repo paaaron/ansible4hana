@@ -1,0 +1,21 @@
+- hosts: hanatraining 
+  gather_facts: false
+  
+  tasks:   
+  - name: Ensure the sql is set into Temp file
+    become: yes
+    copy:
+      src: ./template/HANA_Configuration_MiniChecks_2.00.043+.txt
+      dest: /tmp/HANA_Configuration_MiniChecks_2.00.043+.txt
+      owner: hxeadm
+      group: sapsys
+      mode: 0755
+
+  - name: Get SAP HANA MiniCheck
+    become: yes
+    become_user: "hxeadm"
+    #shell: "/usr/sap/SH1/HDB00/HDB info|grep -i 'hdbnameserver'"
+    shell: '/usr/sap/{{hana_sid}}/HDB{{instance_number}}/exe/hdbsql  -A -x -d SYSTEMDB -I /tmp/HANA_Configuration_MiniChecks_2.00.043+.txt -U ANSIBLE'
+    register: hdbstatus
+  - debug: 
+      msg: "{{hdbstatus.stdout.split('\n')}}"
