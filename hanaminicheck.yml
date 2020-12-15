@@ -15,7 +15,7 @@
     become: yes
     become_user: "hxeadm"
     #shell: "/usr/sap/SH1/HDB00/HDB info|grep -i 'hdbnameserver'"
-    shell: '/usr/sap/{{hana_sid}}/HDB{{instance_number}}/exe/hdbsql  -A -x -d SYSTEMDB -I /tmp/HANA_Configuration_MiniChecks_2.00.043+.txt -U ANSIBLE'
+    shell: '/usr/sap/{{hana_sid}}/HDB{{instance_number}}/exe/hdbsql  -A -x -d SYSTEMDB -I /tmp/HANA_Configuration_MiniChecks_2.00.043+.txt -U {{hdb_key}}'
     register: hdbstatus
   - debug: 
       msg: "{{hdbstatus.stdout.split('\n')}}"
