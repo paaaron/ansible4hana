@@ -1,7 +1,7 @@
 - hosts: hanatraining 
   gather_facts: false
   tasks:   
-  - name: SAP HANA Version
+  - name: SAP HANA databases
     become: yes
     args:
       warn: false
